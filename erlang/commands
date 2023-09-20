@@ -1,0 +1,12 @@
+A = numerl:rnd_matrix(1000).
+B = numerl:rnd_matrix(1000).
+F0 = fun() -> erlangconf_app:matrix_multiply(A,B) eTC = fun(F) -> Y = now(), V = F(), X = now(), {timer:now_diff(X,Y), V} end.
+nd.
+F1 = fun() -> erlangconf_app:matrix_multiply_parallel_1(A,B) end.
+F2 = fun() -> erlangconf_app:matrix_multiply_parallel_2(A,B) end.
+F3 = fun() -> erlangconf_app:matrix_multiply_parallel_3(A,B) end.
+
+TC(F0).
+TC(F1).
+TC(F2).
+TC(F3).

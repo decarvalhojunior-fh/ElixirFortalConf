@@ -1,0 +1,8 @@
+[{<<"erlBlas">>,
+  {git,"https://github.com/zelirio/ErlBlas.git",
+       {ref,"f3256ec167e64d589c5c077cd17b0901cf405eb7"}},
+  0},
+ {<<"numerl">>,
+  {git,"https://github.com/tanguyl/numerl.git",
+       {ref,"4d7cf8a5e98eca70710e5032f330e55c006cc6f1"}},
+  0}].

@@ -1,0 +1,49 @@
+
+~/rebar3 shell --sname cu_00
+~/rebar3 shell --sname cu_01
+~/rebar3 shell --sname cu_10
+~/rebar3 shell --sname cu_11
+
+~/rebar3 shell --sname manager
+
+========================
+
+c(erlangconf_app).
+
+cd("src").
+
+
+Nodes = ['cu_00@carvalho-Inspiron-7460', 'cu_01@carvalho-Inspiron-7460', 'cu_10@carvalho-Inspiron-7460', 'cu_11@carvalho-Inspiron-7460'].
+
+Left = fun ('cu_00@carvalho-Inspiron-7460') -> 'cu_01@carvalho-Inspiron-7460'; 
+           ('cu_01@carvalho-Inspiron-7460') -> 'cu_00@carvalho-Inspiron-7460';
+           ('cu_10@carvalho-Inspiron-7460') -> 'cu_11@carvalho-Inspiron-7460';
+           ('cu_11@carvalho-Inspiron-7460') -> 'cu_10@carvalho-Inspiron-7460'
+       end.
+
+Up = fun ('cu_00@carvalho-Inspiron-7460') -> 'cu_10@carvalho-Inspiron-7460';
+         ('cu_10@carvalho-Inspiron-7460') -> 'cu_00@carvalho-Inspiron-7460';
+         ('cu_01@carvalho-Inspiron-7460') -> 'cu_11@carvalho-Inspiron-7460';
+         ('cu_11@carvalho-Inspiron-7460') -> 'cu_01@carvalho-Inspiron-7460'
+     end.
+
+P = length(Nodes).
+D = round(math:sqrt(P)).
+N = 100.
+A = numerl:matrix([[1 || Y <- lists:seq(1,N)] || Y <- lists:seq(1,N)]).
+F0 = fun() -> erlangconf_app:matrix_multiply(A,A) end.
+F1 = fun() -> erlangconf_app:matrix_multiply_parallel_1(A,A) end.
+F2 = fun() -> erlangconf_app:matrix_multiply_parallel_2(A,A) end.
+F3 = fun() -> erlangconf_app:matrix_multiply_parallel_3(A,A) end.
+F4 = fun() -> erlangconf_app:matrix_multiply_parallel_5(A,A) end.
+F5 = fun() -> erlangconf_app:matrix_multiply_cannon_manager(Nodes, round(N/D), Up, Left) end.
+
+TC = fun(F) -> Y = now(), V = F(), X = now(), {timer:now_diff(X,Y), V} end.
+TC(F4).
+
+TC(F0).
+TC(F1).
+TC(F2).
+TC(F3).
+TC(F4).
+TC(F5).

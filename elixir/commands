@@ -1,0 +1,5 @@
+import ElixirConf
+import Matrex  
+a = random(200)
+b = random(200)
+:timer.tc(fn -> matrix_multiply_parallel_2(a,b) end)
